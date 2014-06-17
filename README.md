@@ -16,6 +16,7 @@ todo
 
 ### How to use
 --------------
+[https://github.com/kai-wang-john/WaveView/blob/master/demo/res/layout/main.xml#L9-L17](https://github.com/kai-wang-john/WaveView/blob/master/demo/res/layout/main.xml#L9-L17)
 ````xml
 
 <com.john.waveview.WaveView
