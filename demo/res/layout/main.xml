@@ -13,7 +13,7 @@
 		android:background="@color/holo_purple"
 		wave:above_wave_color="@android:color/white"
 		wave:blow_wave_color="@android:color/white"
-		wave:progress="60"
+		wave:progress="80"
 		/>
 
 	<SeekBar
