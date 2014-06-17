@@ -1,15 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-			  android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
 			  android:layout_width="fill_parent"
 			  android:layout_height="fill_parent"
 			  android:background="@color/holo_purple"
-			  android:gravity="center">
+			  >
 
 	<com.john.waveview.WaveView
+		android:id="@+id/wave_view"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:layout_marginTop="100dp"
 		android:background="@color/holo_purple"/>
-</LinearLayout>
+
+	<SeekBar
+		android:id="@+id/seek_bar"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="bottom|center_horizontal"
+		/>
+</FrameLayout>
 
