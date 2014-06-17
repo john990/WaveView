@@ -9,7 +9,7 @@ a wave view of android,also can be used as progress bar.
 todo
 
 
-### What is the use
+### What can be used as
 -------------
   * background
   * progress bar
