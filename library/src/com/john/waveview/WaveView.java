@@ -155,7 +155,7 @@ public class WaveView extends View {
 
     public void setProgress(int progress) {
         this.progress = progress > 100 ? 100 : progress;
-        invalidate();
+//        invalidate();
     }
 
     @Override
