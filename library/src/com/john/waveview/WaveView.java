@@ -145,7 +145,6 @@ public class WaveView extends View {
         }
         aboveWavePath.lineTo(getRight(), getHeight());
 
-
         blowWavePath.moveTo(getLeft(), getHeight());
         for (float i = 0; x_zoom * i <= getRight() + max_right; i += offset) {
             blowWavePath.lineTo((x_zoom * i), (float) (y_zoom * Math.cos(i + blowOffset[offsetIndex])) + waveToTop);
@@ -155,7 +154,6 @@ public class WaveView extends View {
 
     public void setProgress(int progress) {
         this.progress = progress > 100 ? 100 : progress;
-//        invalidate();
     }
 
     @Override
