@@ -6,8 +6,11 @@ a wave view of android,also can be used as progress bar.
 
 ### Screenshot
 -------------
-todo
+![screen](https://raw.github.com/kai-wang-john/WaveView/master/screenshot%26apk/screenshot.gif)
 
+### APK
+---------------
+[demo.apk](https://raw.github.com/kai-wang-john/WaveView/master/screenshot%26apk/demo.unaligned.apk)
 
 ### What can be used as
 -------------
