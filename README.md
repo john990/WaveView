@@ -1,3 +1,4 @@
+![icon](https://raw.github.com/kai-wang-john/WaveView/master/demo/res/drawable-hdpi/ic_launcher.png)
 WaveView
 ========
 
