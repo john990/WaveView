@@ -6,8 +6,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
-import android.os.Handler;
-import android.os.Message;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
@@ -51,8 +49,8 @@ public class WaveView extends View {
     private final float max_right = x_zoom * offset;
 
     // wave animation
-    private float aboveOffset1 = 0.0f;
-    private float blowOffset1 = 4.0f;
+    private float aboveOffset = 0.0f;
+    private float blowOffset = 4.0f;
     private float animOffset = 0.15f;
 
     // refresh thread
@@ -137,13 +135,13 @@ public class WaveView extends View {
 
         aboveWavePath.moveTo(getLeft(), getHeight());
         for (float i = 0; x_zoom * i <= getRight() + max_right; i += offset) {
-            aboveWavePath.lineTo((x_zoom * i), (float) (y_zoom * Math.cos(i + aboveOffset1)) + waveToTop);
+            aboveWavePath.lineTo((x_zoom * i), (float) (y_zoom * Math.cos(i + aboveOffset)) + waveToTop);
         }
         aboveWavePath.lineTo(getRight(), getHeight());
 
         blowWavePath.moveTo(getLeft(), getHeight());
         for (float i = 0; x_zoom * i <= getRight() + max_right; i += offset) {
-            blowWavePath.lineTo((x_zoom * i), (float) (y_zoom * Math.cos(i + blowOffset1)) + waveToTop);
+            blowWavePath.lineTo((x_zoom * i), (float) (y_zoom * Math.cos(i + blowOffset)) + waveToTop);
         }
         blowWavePath.lineTo(getRight(), getHeight());
     }
@@ -193,31 +191,17 @@ public class WaveView extends View {
         post(mRefreshProgressRunnable);
     }
 
-
-    private static float[] getWaveOffset(float start, float offset, int length) {
-        float[] f = new float[length];
-        for (int i = 0; i < length; i++) {
-            if(i<length*0.75){
-                start += offset;
-                f[i] = start;
-            }else{
-                f[i] = f[length-i];
-            }
-        }
-        return f;
-    }
-
     private void getWaveOffset(){
-        if(blowOffset1 > Float.MAX_VALUE - 100){
-            blowOffset1 = 0;
+        if(blowOffset > Float.MAX_VALUE - 100){
+            blowOffset = 0;
         }else{
-            blowOffset1 += animOffset;
+            blowOffset += animOffset;
         }
 
-        if(aboveOffset1 > Float.MAX_VALUE - 100){
-            aboveOffset1 = 0;
+        if(aboveOffset > Float.MAX_VALUE - 100){
+            aboveOffset = 0;
         }else{
-            aboveOffset1 += animOffset;
+            aboveOffset += animOffset;
         }
     }
 
