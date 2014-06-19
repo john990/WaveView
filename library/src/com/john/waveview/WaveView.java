@@ -8,9 +8,11 @@ import android.graphics.Paint;
 import android.graphics.Path;
 import android.os.Handler;
 import android.os.Message;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.AttributeSet;
-import android.util.Log;
 import android.view.View;
+import android.widget.ProgressBar;
 
 /**
  * Created by kai.wang on 6/17/14.
@@ -53,8 +55,10 @@ public class WaveView extends View {
     private final float max_right = x_zoom * offset;
 
     // refresh thread
-    private boolean refreshable = true;
-    private Thread refreshThread;
+    private boolean mRefreshable = true;
+    private Thread mRefreshThread;
+    private RefreshProgressRunnable mRefreshProgressRunnable;
+
 
     private final int REFRESH = 100;
     private Handler handler = new Handler(new Handler.Callback() {
@@ -83,8 +87,6 @@ public class WaveView extends View {
 
         initializePainters();
 
-        refreshThread = new RefreshThread();
-        refreshThread.start();
     }
 
     @Override
@@ -157,16 +159,100 @@ public class WaveView extends View {
     }
 
     @Override
+    public Parcelable onSaveInstanceState() {
+        // Force our ancestor class to save its state
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState ss = new SavedState(superState);
+
+        ss.progress = progress;
+
+        return ss;
+    }
+
+    @Override
+    public void onRestoreInstanceState(Parcelable state) {
+        SavedState ss = (SavedState) state;
+        super.onRestoreInstanceState(ss.getSuperState());
+
+        setProgress(ss.progress);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mRefreshThread = new RefreshThread();
+        mRefreshThread.start();
+    }
+
+    @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        refreshable = false;
-        refreshThread.interrupt();
+        mRefreshable = false;
+        mRefreshThread.interrupt();
+    }
+
+    private synchronized void refreshProgress() {
+        if (mRefreshProgressRunnable == null) {
+            mRefreshProgressRunnable = new RefreshProgressRunnable();
+        }
+
+        post(mRefreshProgressRunnable);
+    }
+
+    static class SavedState extends BaseSavedState {
+        int progress;
+
+        /**
+         * Constructor called from {@link ProgressBar#onSaveInstanceState()}
+         */
+        SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        /**
+         * Constructor called from {@link #CREATOR}
+         */
+        private SavedState(Parcel in) {
+            super(in);
+            progress = in.readInt();
+        }
+
+        @Override
+        public void writeToParcel(Parcel out, int flags) {
+            super.writeToParcel(out, flags);
+            out.writeInt(progress);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+            public SavedState createFromParcel(Parcel in) {
+                return new SavedState(in);
+            }
+
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        };
+    }
+
+    private class RefreshProgressRunnable implements Runnable {
+        public void run() {
+            synchronized (WaveView.this) {
+                offsetIndex++;
+                if (offsetIndex == aboveOffset.length) {
+                    offsetIndex = 0;
+                }
+
+                calculatePath();
+
+                invalidate();
+            }
+        }
     }
 
     class RefreshThread extends Thread {
         @Override
         public void run() {
-            while (refreshable) {
+            while (mRefreshable) {
                 try {
                     sleep(100);
                     offsetIndex++;
@@ -174,9 +260,7 @@ public class WaveView extends View {
                         offsetIndex = 0;
                     }
 
-                    calculatePath();
-
-                    handler.sendEmptyMessage(REFRESH);
+                    refreshProgress();
 
                 } catch (InterruptedException e) {
                 }
