@@ -9,6 +9,7 @@ import android.graphics.Path;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ProgressBar;
 
@@ -54,12 +55,7 @@ public class WaveView extends View {
     private float animOffset = 0.15f;
 
     // refresh thread
-    private boolean mRefreshable = true;
-    private Thread mRefreshThread;
     private RefreshProgressRunnable mRefreshProgressRunnable;
-
-
-    private final int REFRESH = 100;
 
     public WaveView(Context context, AttributeSet attrs) {
         this(context, attrs, R.attr.waveViewStyle);
@@ -127,6 +123,9 @@ public class WaveView extends View {
         blowWavePaint.setAntiAlias(true);
     }
 
+    /**
+     * calculate wave track
+     */
     private void calculatePath() {
         aboveWavePath.reset();
         blowWavePath.reset();
@@ -151,6 +150,33 @@ public class WaveView extends View {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mRefreshProgressRunnable = new RefreshProgressRunnable();
+        getHandler().post(mRefreshProgressRunnable);
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        getHandler().removeCallbacks(mRefreshProgressRunnable);
+    }
+
+    private void getWaveOffset(){
+        if(blowOffset > Float.MAX_VALUE - 100){
+            blowOffset = 0;
+        }else{
+            blowOffset += animOffset;
+        }
+
+        if(aboveOffset > Float.MAX_VALUE - 100){
+            aboveOffset = 0;
+        }else{
+            aboveOffset += animOffset;
+        }
+    }
+
+    @Override
     public Parcelable onSaveInstanceState() {
         // Force our ancestor class to save its state
         Parcelable superState = super.onSaveInstanceState();
@@ -169,43 +195,8 @@ public class WaveView extends View {
         setProgress(ss.progress);
     }
 
-    @Override
-    protected void onAttachedToWindow() {
-        super.onAttachedToWindow();
-        mRefreshThread = new RefreshThread();
-        mRefreshThread.start();
-    }
 
-    @Override
-    protected void onDetachedFromWindow() {
-        super.onDetachedFromWindow();
-        mRefreshable = false;
-        mRefreshThread.interrupt();
-    }
-
-    private synchronized void refreshProgress() {
-        if (mRefreshProgressRunnable == null) {
-            mRefreshProgressRunnable = new RefreshProgressRunnable();
-        }
-
-        post(mRefreshProgressRunnable);
-    }
-
-    private void getWaveOffset(){
-        if(blowOffset > Float.MAX_VALUE - 100){
-            blowOffset = 0;
-        }else{
-            blowOffset += animOffset;
-        }
-
-        if(aboveOffset > Float.MAX_VALUE - 100){
-            aboveOffset = 0;
-        }else{
-            aboveOffset += animOffset;
-        }
-    }
-
-    static class SavedState extends BaseSavedState {
+    private static class SavedState extends BaseSavedState {
         int progress;
 
         /**
@@ -246,23 +237,11 @@ public class WaveView extends View {
                 calculatePath();
 
                 invalidate();
+
+                getHandler().postDelayed(this,16);
             }
         }
     }
 
-    class RefreshThread extends Thread {
-        @Override
-        public void run() {
-            while (mRefreshable) {
-                try {
-                    sleep(50);
-
-                    refreshProgress();
-
-                } catch (InterruptedException e) {
-                }
-            }
-        }
-    }
 
 }
