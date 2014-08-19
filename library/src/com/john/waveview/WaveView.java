@@ -37,21 +37,19 @@ public class WaveView extends View {
 
     private int offsetIndex = 0;
 
-    /**
-     * wave crest
-     */
+    /** wave length */
     private final int x_zoom = 150;
 
-    /**
-     * wave length
-     */
+    /** wave crest */
     private final int y_zoom = 6;
+    /** offset of X */
     private final float offset = 0.5f;
     private final float max_right = x_zoom * offset;
 
     // wave animation
     private float aboveOffset = 0.0f;
     private float blowOffset = 4.0f;
+    /** offset of Y */
     private float animOffset = 0.15f;
 
     // refresh thread
@@ -71,15 +69,14 @@ public class WaveView extends View {
         blowWaveColor = attributes.getColor(R.styleable.WaveView_blow_wave_color, default_blow_wave_color);
         progress = attributes.getInt(R.styleable.WaveView_progress, default_progress);
 
-        initializePainters();
+        setProgress(progress);
 
+        initializePainters();
     }
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
-        waveToTop = (int) (getHeight() * (1f - progress / 100f));
 
         canvas.drawPath(blowWavePath, blowWavePaint);
         canvas.drawPath(aboveWavePath, aboveWavePaint);
@@ -195,6 +192,20 @@ public class WaveView extends View {
         setProgress(ss.progress);
     }
 
+    private class RefreshProgressRunnable implements Runnable {
+        public void run() {
+            synchronized (WaveView.this) {
+                waveToTop = (int) (getHeight() * (1f - progress / 100f));
+
+                calculatePath();
+
+                invalidate();
+
+                getHandler().postDelayed(this,16);
+            }
+        }
+    }
+
 
     private static class SavedState extends BaseSavedState {
         int progress;
@@ -230,18 +241,5 @@ public class WaveView extends View {
             }
         };
     }
-
-    private class RefreshProgressRunnable implements Runnable {
-        public void run() {
-            synchronized (WaveView.this) {
-                calculatePath();
-
-                invalidate();
-
-                getHandler().postDelayed(this,16);
-            }
-        }
-    }
-
 
 }
