@@ -150,13 +150,13 @@ public class WaveView extends View {
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
         mRefreshProgressRunnable = new RefreshProgressRunnable();
-        getHandler().post(mRefreshProgressRunnable);
+        post(mRefreshProgressRunnable);
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        getHandler().removeCallbacks(mRefreshProgressRunnable);
+        removeCallbacks(mRefreshProgressRunnable);
     }
 
     private void getWaveOffset(){
@@ -201,7 +201,7 @@ public class WaveView extends View {
 
                 invalidate();
 
-                getHandler().postDelayed(this,16);
+                postDelayed(this,16);
             }
         }
     }
