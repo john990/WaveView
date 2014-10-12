@@ -211,7 +211,7 @@ public class WaveView extends View {
         int progress;
 
         /**
-         * Constructor called from {@link ProgressBar#onSaveInstanceState()}
+         * Constructor called from {@link android.widget.ProgressBar#onSaveInstanceState()}
          */
         SavedState(Parcelable superState) {
             super(superState);
@@ -231,7 +231,7 @@ public class WaveView extends View {
             out.writeInt(progress);
         }
 
-        public static final Parcelable.Creator<SavedState> CREATOR = new Parcelable.Creator<SavedState>() {
+        public static final Creator<SavedState> CREATOR = new Creator<SavedState>() {
             public SavedState createFromParcel(Parcel in) {
                 return new SavedState(in);
             }
