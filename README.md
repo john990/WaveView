@@ -1,4 +1,5 @@
-![icon](https://raw.github.com/kai-wang-john/WaveView/master/demo/res/drawable-hdpi/ic_launcher.png)
+![icon](https://raw.github.com/john990/WaveView/master/app/src/main/res/drawable-hdpi/ic_launcher.png)
+
 WaveView
 ========
 
@@ -7,11 +8,11 @@ a wave view of android,also can be used as progress bar.
 
 ### Screenshot
 -------------
-![screen](https://raw.github.com/kai-wang-john/WaveView/master/screenshot%26apk/screenshot.gif)
+![screen](https://raw.github.com/john990/WaveView/master/screenshot%26apk/screenshot.gif)
 
 ### APK
 ---------------
-[demo.apk](https://raw.github.com/kai-wang-john/WaveView/master/screenshot%26apk/demo.unaligned.apk)
+[demo.apk](https://raw.github.com/john990/WaveView/master/screenshot%26apk/demo.unaligned.apk)
 
 ### What can be used as
 -------------
@@ -20,7 +21,7 @@ a wave view of android,also can be used as progress bar.
 
 ### How to use
 --------------
-[https://github.com/kai-wang-john/WaveView/blob/master/demo/res/layout/main.xml#L9-L17](https://github.com/kai-wang-john/WaveView/blob/master/demo/res/layout/main.xml#L9-L17)
+[https://github.com/kai-wang-john/WaveView/blob/master/demo/res/layout/main.xml#L9-L17](https://github.com/john990/WaveView/blob/master/demo/res/layout/main.xml#L9-L17)
 ````xml
 
 <com.john.waveview.WaveView
