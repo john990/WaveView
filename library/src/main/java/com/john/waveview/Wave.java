@@ -5,6 +5,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -161,6 +162,10 @@ class Wave extends View {
         super.onWindowVisibilityChanged(visibility);
         if (View.GONE == visibility) {
             removeCallbacks(mRefreshProgressRunnable);
+        }else{
+            removeCallbacks(mRefreshProgressRunnable);
+            mRefreshProgressRunnable = new RefreshProgressRunnable();
+            post(mRefreshProgressRunnable);
         }
     }
 
@@ -185,8 +190,7 @@ class Wave extends View {
             mMaxRight = right + mXOffset;
             omega = PI2 / mXZoom;
         }
-        mRefreshProgressRunnable = new RefreshProgressRunnable();
-        post(mRefreshProgressRunnable);
+
     }
 
     private void getWaveOffset() {
