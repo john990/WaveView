@@ -13,48 +13,57 @@ import android.widget.LinearLayout;
  * Created by John on 2014/10/15.
  */
 public class WaveView extends LinearLayout {
-    private int aboveWaveColor;
-    private int blowWaveColor;
-    private int progress;
+    protected static final int LARGE = 1;
+    protected static final int MIDDLE = 2;
+    protected static final int LITTLE = 3;
 
-    private int waveToTop;
+    private int mAboveWaveColor;
+    private int mBlowWaveColor;
+    private int mProgress;
+    private int mWaveHeight;
+    private int mWaveMultiple;
+    private int mWaveHz;
 
-    private Wave wave;
-    private Solid solid;
+    private int mWaveToTop;
 
-    private final int default_above_wave_alpha = 50;
-    private final int default_blow_wave_alpha = 30;
-    private final int default_above_wave_color = Color.WHITE;
-    private final int default_blow_wave_color = Color.WHITE;
-    private final int default_progress = 80;
+    private Wave mWave;
+    private Solid mSolid;
+
+    private final int DEFAULT_ABOVE_WAVE_COLOR = Color.WHITE;
+    private final int DEFAULT_BLOW_WAVE_COLOR = Color.WHITE;
+    private final int DEFAULT_PROGRESS = 80;
 
     public WaveView(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(VERTICAL);
         //load styled attributes.
         final TypedArray attributes = context.getTheme().obtainStyledAttributes(attrs, R.styleable.WaveView, R.attr.waveViewStyle, 0);
+        mAboveWaveColor = attributes.getColor(R.styleable.WaveView_above_wave_color, DEFAULT_ABOVE_WAVE_COLOR);
+        mBlowWaveColor = attributes.getColor(R.styleable.WaveView_blow_wave_color, DEFAULT_BLOW_WAVE_COLOR);
+        mProgress = attributes.getInt(R.styleable.WaveView_progress, DEFAULT_PROGRESS);
+        mWaveHeight = attributes.getInt(R.styleable.WaveView_wave_height, MIDDLE);
+        mWaveMultiple = attributes.getInt(R.styleable.WaveView_wave_length, LARGE);
+        mWaveHz = attributes.getInt(R.styleable.WaveView_wave_hz, MIDDLE);
+        attributes.recycle();
 
-        aboveWaveColor = attributes.getColor(R.styleable.WaveView_above_wave_color, default_above_wave_color);
-        blowWaveColor = attributes.getColor(R.styleable.WaveView_blow_wave_color, default_blow_wave_color);
-        progress = attributes.getInt(R.styleable.WaveView_progress, default_progress);
+        mWave = new Wave(context, null);
+        mWave.initializeWaveSize(mWaveMultiple, mWaveHeight, mWaveHz);
+        mWave.setAboveWaveColor(mAboveWaveColor);
+        mWave.setBlowWaveColor(mBlowWaveColor);
+        mWave.initializePainters();
 
-        wave = new Wave(context, null);
-        wave.setAboveWaveColor(aboveWaveColor);
-        wave.setBlowWaveColor(blowWaveColor);
-        wave.initializePainters();
+        mSolid = new Solid(context, null);
+        mSolid.setAboveWavePaint(mWave.getAboveWavePaint());
+        mSolid.setBlowWavePaint(mWave.getBlowWavePaint());
 
-        solid = new Solid(context, null);
-        solid.setAboveWavePaint(wave.getAboveWavePaint());
-        solid.setBlowWavePaint(wave.getBlowWavePaint());
+        addView(mWave);
+        addView(mSolid);
 
-        addView(wave);
-        addView(solid);
-
-        setProgress(progress);
+        setProgress(mProgress);
     }
 
     public void setProgress(int progress) {
-        this.progress = progress > 100 ? 100 : progress;
+        this.mProgress = progress > 100 ? 100 : progress;
         computeWaveToTop();
     }
 
@@ -67,12 +76,12 @@ public class WaveView extends LinearLayout {
     }
 
     private void computeWaveToTop() {
-        waveToTop = (int) (getHeight() * (1f - progress / 100f));
-        ViewGroup.LayoutParams params = wave.getLayoutParams();
+        mWaveToTop = (int) (getHeight() * (1f - mProgress / 100f));
+        ViewGroup.LayoutParams params = mWave.getLayoutParams();
         if (params != null) {
-            ((LayoutParams) params).topMargin = waveToTop;
+            ((LayoutParams) params).topMargin = mWaveToTop;
         }
-        wave.setLayoutParams(params);
+        mWave.setLayoutParams(params);
     }
 
     @Override
@@ -80,9 +89,7 @@ public class WaveView extends LinearLayout {
         // Force our ancestor class to save its state
         Parcelable superState = super.onSaveInstanceState();
         SavedState ss = new SavedState(superState);
-
-        ss.progress = progress;
-
+        ss.progress = mProgress;
         return ss;
     }
 
@@ -90,7 +97,6 @@ public class WaveView extends LinearLayout {
     public void onRestoreInstanceState(Parcelable state) {
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(ss.getSuperState());
-
         setProgress(ss.progress);
     }
 
