@@ -9,7 +9,7 @@ A wave view of android,can be used as progress bar.
 
 ### Screenshot
 -------------
-![screen](https://raw.github.com/john990/WaveView/master/screenshot%26apk/screenshot.gif)
+<img src="https://raw.github.com/john990/WaveView/master/screenshot%26apk/screenshot.gif" style="width:300px;height:500px;"/>
 
 ### APK
 ---------------
