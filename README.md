@@ -2,6 +2,7 @@
 
 WaveView
 ========
+[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/john990/WaveView?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
 a wave view of android,also can be used as progress bar.
 
