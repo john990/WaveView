@@ -4,7 +4,7 @@ WaveView
 ========
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/john990/WaveView?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 
-a wave view of android,also can be used as progress bar.
+A wave view of android,can be used as progress bar.
 
 
 ### Screenshot
@@ -22,18 +22,21 @@ a wave view of android,also can be used as progress bar.
 
 ### How to use
 --------------
-[https://github.com/kai-wang-john/WaveView/blob/master/demo/res/layout/main.xml#L9-L17](https://github.com/john990/WaveView/blob/master/demo/res/layout/main.xml#L9-L17)
+[https://github.com/john990/WaveView/blob/master/app/src/main/res/layout/main.xml#L7-L17](https://github.com/john990/WaveView/blob/master/app/src/main/res/layout/main.xml#L7-L17)
 ````xml
 
 <com.john.waveview.WaveView
-		android:id="@+id/wave_view"
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:background="@color/holo_purple"
-		wave:above_wave_color="@android:color/white"
-		wave:blow_wave_color="@android:color/white"
-		wave:progress="60"
-		/>
+                android:id="@+id/wave_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#ff702e8c"
+                wave:above_wave_color="@android:color/white"
+                wave:blow_wave_color="@android:color/white"
+                wave:progress="80"
+                wave:wave_height="little"
+                wave:wave_length="middle"
+                wave:wave_hz="normal"
+                />
 ````
 or you can juest use(default progress is 80%)
 ````xml
