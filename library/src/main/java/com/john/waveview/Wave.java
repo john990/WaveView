@@ -26,6 +26,7 @@ class Wave extends View {
     public final int DEFAULT_BLOW_WAVE_ALPHA = 30;
 
     private final float X_SPACE = 20;
+    private final double PI2 = 2 * Math.PI;
 
     private Path mAboveWavePath = new Path();
     private Path mBlowWavePath = new Path();
@@ -40,19 +41,15 @@ class Wave extends View {
     private float mWaveLength;
     private int mWaveHeight;
     private float mMaxRight;
+    private float mWaveHz;
 
     // wave animation
     private float mAboveOffset = 0.0f;
     private float mBlowOffset;
 
-    private float mWaveHz;
-
     private RefreshProgressRunnable mRefreshProgressRunnable;
 
     private int left, right, bottom;
-
-    private double PI2 = 2 * Math.PI;
-
     // ω
     private double omega;
 
@@ -72,11 +69,6 @@ class Wave extends View {
         canvas.drawPath(mAboveWavePath, mAboveWavePaint);
     }
 
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        setMeasuredDimension(measure(widthMeasureSpec, true), measure(heightMeasureSpec, false));
-    }
-
     public void setAboveWaveColor(int aboveWaveColor) {
         this.mAboveWaveColor = aboveWaveColor;
     }
@@ -93,32 +85,11 @@ class Wave extends View {
         return mBlowWavePaint;
     }
 
-    private int measure(int measureSpec, boolean isWidth) {
-        int result;
-        int mode = MeasureSpec.getMode(measureSpec);
-        int size = MeasureSpec.getSize(measureSpec);
-        int padding = isWidth ? getPaddingLeft() + getPaddingRight() : getPaddingTop() + getPaddingBottom();
-        if (mode == MeasureSpec.EXACTLY) {
-            result = size;
-        } else {
-            result = isWidth ? getSuggestedMinimumWidth() : getSuggestedMinimumHeight();
-            result += padding;
-            if (mode == MeasureSpec.AT_MOST) {
-                if (isWidth) {
-                    result = Math.max(result, size);
-                } else {
-                    result = Math.min(result, size);
-                }
-            }
-        }
-        return result;
-    }
-
     public void initializeWaveSize(int waveMultiple, int waveHeight, int waveHz) {
         mWaveMultiple = getWaveMultiple(waveMultiple);
         mWaveHeight = getWaveHeight(waveHeight);
         mWaveHz = getWaveHz(waveHz);
-        mBlowOffset = mWaveHeight / 2f;
+        mBlowOffset = mWaveHeight * 0.4f;
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 mWaveHeight * 2);
         setLayoutParams(params);
