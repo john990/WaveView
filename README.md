@@ -3,13 +3,14 @@
 WaveView
 ========
 [![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/john990/WaveView?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-WaveView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1260)
 
 A wave view of android,can be used as progress bar.
 
 
 ### Screenshot
 -------------
-<img src="https://raw.github.com/john990/WaveView/master/screenshot%26apk/screenshot.gif" width="300px" height="500px"/>
+![](https://raw.github.com/john990/WaveView/master/screenshot%26apk/screenshot.gif)
 
 ### APK
 ---------------
