@@ -230,7 +230,7 @@ class Wave extends View {
 
                 invalidate();
 
-                long gap = 16 - System.currentTimeMillis() - start;
+                long gap = 16 - (System.currentTimeMillis() - start);
                 postDelayed(this, gap < 0 ? 0 : gap);
             }
         }
