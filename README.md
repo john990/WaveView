@@ -37,7 +37,7 @@ A wave view of android,can be used as progress bar.
         wave:wave_hz="normal"
         wave:wave_length="middle" />
 ````
-or you can juest use(default progress is 80%)
+or you can just use(default progress is 80%)
 ````xml
     <com.john.waveview.WaveView
         android:id="@+id/wave_view"
