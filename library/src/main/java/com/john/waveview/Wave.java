@@ -201,7 +201,7 @@ class Wave extends View {
             mWaveLength = width * mWaveMultiple;
             left = getLeft();
             right = getRight();
-            bottom = getBottom();
+            bottom = getBottom() + 2;
             mMaxRight = right + X_SPACE;
             omega = PI2 / mWaveLength;
         }
