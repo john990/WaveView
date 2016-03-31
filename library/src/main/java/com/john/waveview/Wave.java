@@ -195,6 +195,14 @@ class Wave extends View {
         }
     }
 
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        if (mWaveLength==0){
+            startWave();
+        }
+    }
+
     private void startWave() {
         if (getWidth() != 0) {
             int width = getWidth();
