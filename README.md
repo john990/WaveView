@@ -46,3 +46,17 @@ or you can just use(default progress is 80%)
         android:background="@color/holo_purple"
         />
 ````
+
+### dependencies
+````
+allprojects {
+		repositories {
+			...
+			maven { url "https://jitpack.io" }
+		}
+	}
+	
+	dependencies {
+	        compile 'com.github.john990:WaveView:v0.9'
+	}
+````
