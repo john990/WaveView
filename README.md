@@ -57,6 +57,6 @@ allprojects {
 	}
 	
 	dependencies {
-	        compile 'com.github.john990:WaveView:v0.9'
+	        implementation 'com.github.john990:WaveView:v0.9'
 	}
 ````
