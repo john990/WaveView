@@ -44,7 +44,7 @@ public class WaveView extends LinearLayout {
         mProgress = attributes.getInt(R.styleable.WaveView_progress, DEFAULT_PROGRESS);
         mWaveHeight = attributes.getInt(R.styleable.WaveView_wave_height, MIDDLE);
         mWaveMultiple = attributes.getInt(R.styleable.WaveView_wave_length, LARGE);
-        mIsFilledTillBrim = attributes.getBoolean(R.styleable.WaveView_fill_to_brim,true);
+        mIsFilledTillBrim = attributes.getBoolean(R.styleable.WaveView_fill_to_brim,false);
         mWaveHz = attributes.getInt(R.styleable.WaveView_wave_hz, MIDDLE);
         attributes.recycle();
 
