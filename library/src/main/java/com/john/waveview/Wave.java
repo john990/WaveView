@@ -18,10 +18,6 @@ class Wave extends View {
     private final float WAVE_LENGTH_MULTIPLE_MIDDLE = 1f;
     private final float WAVE_LENGTH_MULTIPLE_LITTLE = 0.5f;
 
-    private final float WAVE_HZ_FAST = 0.13f;
-    private final float WAVE_HZ_NORMAL = 0.09f;
-    private final float WAVE_HZ_SLOW = 0.05f;
-
     public final int DEFAULT_ABOVE_WAVE_ALPHA = 50;
     public final int DEFAULT_BLOW_WAVE_ALPHA = 30;
 
@@ -85,14 +81,23 @@ class Wave extends View {
         return mBlowWavePaint;
     }
 
-    public void initializeWaveSize(int waveMultiple, int waveHeight, int waveHz) {
+    public void initializeWaveSize(int waveMultiple, int waveHeight, float waveHz) {
         mWaveMultiple = getWaveMultiple(waveMultiple);
         mWaveHeight = getWaveHeight(waveHeight);
-        mWaveHz = getWaveHz(waveHz);
+        mWaveHz = clampWaveHz(waveHz);
         mBlowOffset = mWaveHeight * 0.4f;
         ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
                 mWaveHeight * 2);
         setLayoutParams(params);
+    }
+
+    /**
+     * Clamps input Wave hertz to be within [0,1]
+     * @param waveHz  User input wave hertz*/
+    private float clampWaveHz(float waveHz) {
+        if(waveHz>1) return  1;
+        else if(waveHz<0) return  0;
+        return waveHz;
     }
 
     public void initializePainters() {
@@ -127,18 +132,6 @@ class Wave extends View {
                 return WAVE_HEIGHT_MIDDLE;
             case WaveView.LITTLE:
                 return WAVE_HEIGHT_LITTLE;
-        }
-        return 0;
-    }
-
-    private float getWaveHz(int size) {
-        switch (size) {
-            case WaveView.LARGE:
-                return WAVE_HZ_FAST;
-            case WaveView.MIDDLE:
-                return WAVE_HZ_NORMAL;
-            case WaveView.LITTLE:
-                return WAVE_HZ_SLOW;
         }
         return 0;
     }

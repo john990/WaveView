@@ -12,9 +12,9 @@
         wave:above_wave_color="@android:color/white"
         wave:blow_wave_color="@android:color/white"
         wave:progress="80"
-        wave:wave_height="little"
-        wave:wave_hz="normal"
-        wave:wave_length="middle" />
+        wave:wave_height="large"
+        wave:wave_hz="0.5"
+        wave:wave_length="little" />
 
     <SeekBar
         android:id="@+id/seek_bar"

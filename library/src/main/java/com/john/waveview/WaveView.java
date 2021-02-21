@@ -22,7 +22,7 @@ public class WaveView extends LinearLayout {
     private int mProgress;
     private int mWaveHeight;
     private int mWaveMultiple;
-    private int mWaveHz;
+    private float mWaveHz;
 
     private int mWaveToTop;
 
@@ -32,6 +32,7 @@ public class WaveView extends LinearLayout {
     private final int DEFAULT_ABOVE_WAVE_COLOR = Color.WHITE;
     private final int DEFAULT_BLOW_WAVE_COLOR = Color.WHITE;
     private final int DEFAULT_PROGRESS = 80;
+    private final float DEFAULT_HZ = 0.15f;
 
     public WaveView(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -43,7 +44,7 @@ public class WaveView extends LinearLayout {
         mProgress = attributes.getInt(R.styleable.WaveView_progress, DEFAULT_PROGRESS);
         mWaveHeight = attributes.getInt(R.styleable.WaveView_wave_height, MIDDLE);
         mWaveMultiple = attributes.getInt(R.styleable.WaveView_wave_length, LARGE);
-        mWaveHz = attributes.getInt(R.styleable.WaveView_wave_hz, MIDDLE);
+        mWaveHz = attributes.getFloat(R.styleable.WaveView_wave_hz, DEFAULT_HZ);
         attributes.recycle();
 
         mWave = new Wave(context, null);
