@@ -13,7 +13,7 @@
         wave:blow_wave_color="@android:color/white"
         wave:progress="80"
         wave:wave_height="little"
-        wave:wave_hz="normal"
+        wave:wave_hz="0.09"
         wave:wave_length="middle" />
 
     <SeekBar
