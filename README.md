@@ -2,10 +2,10 @@
 
 WaveView
 ========
-[![Gitter](https://badges.gitter.im/Join Chat.svg)](https://gitter.im/john990/WaveView?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Gitter](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/john990/WaveView?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-WaveView-brightgreen.svg?style=flat)](https://android-arsenal.com/details/1/1260)
 
-A wave view of android,can be used as progress bar.
+A wave view for android, which can be used as progress bar.
 
 
 ### Screenshot
@@ -34,8 +34,9 @@ A wave view of android,can be used as progress bar.
         wave:blow_wave_color="@android:color/white"
         wave:progress="80"
         wave:wave_height="little"
-        wave:wave_hz="normal"
-        wave:wave_length="middle" />
+        wave:wave_hz="little"
+        wave:wave_length="middle" 
+        wave:fill_to_brim="true"/>
 ````
 or you can just use(default progress is 80%)
 ````xml
