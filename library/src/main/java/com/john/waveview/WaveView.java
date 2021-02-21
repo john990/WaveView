@@ -28,6 +28,7 @@ public class WaveView extends LinearLayout {
 
     private Wave mWave;
     private Solid mSolid;
+    private boolean mIsFilledTillBrim;
 
     private final int DEFAULT_ABOVE_WAVE_COLOR = Color.WHITE;
     private final int DEFAULT_BLOW_WAVE_COLOR = Color.WHITE;
@@ -43,6 +44,7 @@ public class WaveView extends LinearLayout {
         mProgress = attributes.getInt(R.styleable.WaveView_progress, DEFAULT_PROGRESS);
         mWaveHeight = attributes.getInt(R.styleable.WaveView_wave_height, MIDDLE);
         mWaveMultiple = attributes.getInt(R.styleable.WaveView_wave_length, LARGE);
+        mIsFilledTillBrim = attributes.getBoolean(R.styleable.WaveView_fill_to_brim,false);
         mWaveHz = attributes.getInt(R.styleable.WaveView_wave_hz, MIDDLE);
         attributes.recycle();
 
@@ -76,7 +78,8 @@ public class WaveView extends LinearLayout {
     }
 
     private void computeWaveToTop() {
-        mWaveToTop = (int) (getHeight() * (1f - mProgress / 100f));
+        boolean isViewFilled = mProgress==100 && mIsFilledTillBrim;
+        mWaveToTop = (int)((isViewFilled)? (-mWave.getMaxHeight()) : (getHeight() * (1f - mProgress / 100f)));
         ViewGroup.LayoutParams params = mWave.getLayoutParams();
         if (params != null) {
             ((LayoutParams) params).topMargin = mWaveToTop;

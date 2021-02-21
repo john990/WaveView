@@ -43,6 +43,8 @@ class Wave extends View {
     private float mMaxRight;
     private float mWaveHz;
 
+    private float mWaveMaxHeight;
+
     // wave animation
     private float mAboveOffset = 0.0f;
     private float mBlowOffset;
@@ -141,6 +143,14 @@ class Wave extends View {
                 return WAVE_HZ_SLOW;
         }
         return 0;
+    }
+
+    public float getMaxHeight(){
+        /* y = (float) (mWaveHeight * Math.sin(omega * x + mBlowOffset) + mWaveHeight);
+         * Max value of Math.sin(omega * x + mBlowOffset) = 1
+         * Hence, Max height = mWaveHeight * 1 + mWaveHeight
+         *                   = mWaveHeight * 2 */
+        return  mWaveHeight * 2;
     }
 
     /**
