@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 	<color name="holo_purple">#ffaa66cc</color>
+	<color name="holo_green">#7CB342</color>
+	<color name="holo_red">#E53935</color>
+
+	<color name="light_blue">#DA00FFE1</color>
+	<color name="dark_blue">#007BFF</color>
 </resources>

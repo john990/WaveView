@@ -8,6 +8,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
+import static com.john.waveview.WaveView.LARGE;
+import static com.john.waveview.WaveView.MIDDLE;
+import static com.john.waveview.WaveView.alphaPercentToInt;
+
 // y=Asin(ωx+φ)+k
 class Wave extends View {
     private final int WAVE_HEIGHT_LARGE = 16;
@@ -22,9 +26,6 @@ class Wave extends View {
     private final float WAVE_HZ_NORMAL = 0.09f;
     private final float WAVE_HZ_SLOW = 0.05f;
 
-    public final int DEFAULT_ABOVE_WAVE_ALPHA = 50;
-    public final int DEFAULT_BLOW_WAVE_ALPHA = 30;
-
     private final float X_SPACE = 20;
     private final double PI2 = 2 * Math.PI;
 
@@ -34,14 +35,11 @@ class Wave extends View {
     private Paint mAboveWavePaint = new Paint();
     private Paint mBlowWavePaint = new Paint();
 
-    private int mAboveWaveColor;
-    private int mBlowWaveColor;
-
-    private float mWaveMultiple;
     private float mWaveLength;
-    private int mWaveHeight;
     private float mMaxRight;
     private float mWaveHz;
+    private int mWaveHeight;
+    private float mWaveMultiple;
 
     // wave animation
     private float mAboveOffset = 0.0f;
@@ -53,65 +51,56 @@ class Wave extends View {
     // ω
     private double omega;
 
-    public Wave(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.waveViewStyle);
+    private int mAboveWaveColor;
+    private int mBlowWaveColor;
+    private float mBlowWaveAlpha;
+    private float mAboveWaveAlpha;
+
+
+    public Wave(Context context, WaveAttributes waveAttributes) {
+        this(context, null, R.attr.waveViewStyle, waveAttributes);
     }
 
-    public Wave(Context context, AttributeSet attrs, int defStyle) {
+    /*For Android Studio Tools*/
+    private Wave(Context context){
+        super(context); }
+
+    private Wave(Context context, AttributeSet attrs, int defStyle, WaveAttributes waveAttributes) {
         super(context, attrs, defStyle);
+        initializeWave(waveAttributes);
     }
 
-    @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-
-        canvas.drawPath(mBlowWavePath, mBlowWavePaint);
-        canvas.drawPath(mAboveWavePath, mAboveWavePaint);
-    }
+    public int getAboveWaveColor() { return mAboveWaveColor; }
 
     public void setAboveWaveColor(int aboveWaveColor) {
-        this.mAboveWaveColor = aboveWaveColor;
+        mAboveWavePaint.setColor(aboveWaveColor);
+        setAboveWaveAlpha(mAboveWaveAlpha);
     }
 
     public void setBlowWaveColor(int blowWaveColor) {
-        this.mBlowWaveColor = blowWaveColor;
+        mBlowWavePaint.setColor(blowWaveColor);
+        setBlowWaveAlpha(mBlowWaveAlpha);
     }
 
-    public Paint getAboveWavePaint() {
-        return mAboveWavePaint;
-    }
+    public int getBlowWaveColor() { return  mBlowWaveColor;}
 
-    public Paint getBlowWavePaint() {
-        return mBlowWavePaint;
-    }
+    public void setAboveWaveAlpha(float aboveWaveAlpha) { mAboveWavePaint.setAlpha(alphaPercentToInt(aboveWaveAlpha)); }
 
-    public void initializeWaveSize(int waveMultiple, int waveHeight, int waveHz) {
-        mWaveMultiple = getWaveMultiple(waveMultiple);
-        mWaveHeight = getWaveHeight(waveHeight);
-        mWaveHz = getWaveHz(waveHz);
-        mBlowOffset = mWaveHeight * 0.4f;
-        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,
-                mWaveHeight * 2);
-        setLayoutParams(params);
-    }
+    public void setBlowWaveAlpha(float blowWaveAlpha) { mBlowWavePaint.setAlpha(alphaPercentToInt(blowWaveAlpha)); }
 
-    public void initializePainters() {
-        mAboveWavePaint.setColor(mAboveWaveColor);
-        mAboveWavePaint.setAlpha(DEFAULT_ABOVE_WAVE_ALPHA);
-        mAboveWavePaint.setStyle(Paint.Style.FILL);
-        mAboveWavePaint.setAntiAlias(true);
+    public void setWaveHz(float waveHz){ mWaveHz = waveHz; }
 
-        mBlowWavePaint.setColor(mBlowWaveColor);
-        mBlowWavePaint.setAlpha(DEFAULT_BLOW_WAVE_ALPHA);
-        mBlowWavePaint.setStyle(Paint.Style.FILL);
-        mBlowWavePaint.setAntiAlias(true);
-    }
+    public float getBlowWaveColorAlpha() { return mBlowWaveAlpha; }
+
+    public float getAboveColorAlpha() { return mAboveWaveAlpha; }
+
+    public float getWaveHz() { return mWaveHz; }
 
     private float getWaveMultiple(int size) {
         switch (size) {
-            case WaveView.LARGE:
+            case LARGE:
                 return WAVE_LENGTH_MULTIPLE_LARGE;
-            case WaveView.MIDDLE:
+            case MIDDLE:
                 return WAVE_LENGTH_MULTIPLE_MIDDLE;
             case WaveView.LITTLE:
                 return WAVE_LENGTH_MULTIPLE_LITTLE;
@@ -121,9 +110,9 @@ class Wave extends View {
 
     private int getWaveHeight(int size) {
         switch (size) {
-            case WaveView.LARGE:
+            case LARGE:
                 return WAVE_HEIGHT_LARGE;
-            case WaveView.MIDDLE:
+            case MIDDLE:
                 return WAVE_HEIGHT_MIDDLE;
             case WaveView.LITTLE:
                 return WAVE_HEIGHT_LITTLE;
@@ -133,14 +122,59 @@ class Wave extends View {
 
     private float getWaveHz(int size) {
         switch (size) {
-            case WaveView.LARGE:
+            case LARGE:
                 return WAVE_HZ_FAST;
-            case WaveView.MIDDLE:
+            case MIDDLE:
                 return WAVE_HZ_NORMAL;
             case WaveView.LITTLE:
                 return WAVE_HZ_SLOW;
         }
         return 0;
+    }
+
+    private void initializeWave(WaveAttributes waveAttributes) {
+        mAboveWaveColor = waveAttributes.getAboveWaveColor();
+        mAboveWaveAlpha = waveAttributes.getAboveWaveAlpha();
+        mBlowWaveColor = waveAttributes.getBlowWaveColor();
+        mBlowWaveAlpha = waveAttributes.getBlowWaveAlpha();
+        int waveLength = waveAttributes.getWaveLength();
+        int waveHeight = waveAttributes.getWaveHeight();
+        int waveHz = waveAttributes.getWaveHz();
+        initializeWaveSize(waveLength, waveHeight, waveHz);
+        initializeAboveWaveColorAlpha();
+        initializeBlowWaveColorAlpha();
+        initializePainters();
+    }
+
+    private void initializeWaveSize(int waveMultiple, int waveHeight, int waveHz) {
+        mWaveMultiple = getWaveMultiple(waveMultiple);
+        mWaveHeight = getWaveHeight(waveHeight);
+        mWaveHz = getWaveHz(waveHz);
+        mBlowOffset = mWaveHeight * 0.4f;
+        ViewGroup.LayoutParams params = new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, mWaveHeight * 2);
+        setLayoutParams(params);
+    }
+
+    private void initializePainters() {
+        mAboveWavePaint.setColor(mAboveWaveColor);
+        mAboveWavePaint.setAlpha(alphaPercentToInt(mAboveWaveAlpha));
+        mAboveWavePaint.setStyle(Paint.Style.FILL);
+        mAboveWavePaint.setAntiAlias(true);
+
+        mBlowWavePaint.setColor(mBlowWaveColor);
+        mBlowWavePaint.setAlpha(alphaPercentToInt(mBlowWaveAlpha));
+        mBlowWavePaint.setStyle(Paint.Style.FILL);
+        mBlowWavePaint.setAntiAlias(true);
+    }
+
+    private void initializeAboveWaveColorAlpha() {
+        setAboveWaveAlpha(mAboveWaveAlpha);
+        setAboveWaveColor(mAboveWaveColor);
+    }
+
+    private void initializeBlowWaveColorAlpha() {
+        setBlowWaveAlpha(mBlowWaveAlpha);
+        setBlowWaveColor(mBlowWaveColor);
     }
 
     /**
@@ -166,6 +200,13 @@ class Wave extends View {
             mBlowWavePath.lineTo(x, y);
         }
         mBlowWavePath.lineTo(right, bottom);
+    }
+
+    @Override
+    protected void onDraw(Canvas canvas) {
+        super.onDraw(canvas);
+        canvas.drawPath(mBlowWavePath, mBlowWavePaint);
+        canvas.drawPath(mAboveWavePath, mAboveWavePaint);
     }
 
     @Override

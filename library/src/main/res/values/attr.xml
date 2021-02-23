@@ -3,7 +3,11 @@
 
 	<declare-styleable name="WaveView">
 		<attr name="above_wave_color" format="color"/>
+        <attr name="above_wave_color_alpha" format="float"/>
+
 		<attr name="blow_wave_color" format="color"/>
+        <attr name="blow_wave_color_alpha" format="float"/>
+
 		<attr name="progress" format="integer"/>
         <attr name="wave_length" format="enum">
             <enum name="large" value="1"/>
@@ -20,6 +24,11 @@
             <enum name="normal" value="2"/>
             <enum name="slow" value="3"/>
         </attr>
+
+        <attr name="wave_color" format="color"/>
+        <attr name="wave_alpha" format="float"/>
+
+        <attr name="background" format="reference"/>
 	</declare-styleable>
 
 	<declare-styleable name="Themes">
