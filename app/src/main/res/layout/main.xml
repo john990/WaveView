@@ -8,13 +8,16 @@
         android:id="@+id/wave_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="#ff702e8c"
-        wave:above_wave_color="@android:color/white"
-        wave:blow_wave_color="@android:color/white"
+        android:background="#FFFFFF"
+        wave:above_wave_color="@color/light_blue"
+        wave:blow_wave_color="@color/light_blue"
+        wave:above_wave_color_alpha="0.5"
+        wave:blow_wave_color_alpha="0.3"
         wave:progress="80"
-        wave:wave_height="little"
+        wave:wave_height="large"
         wave:wave_hz="normal"
-        wave:wave_length="middle" />
+        wave:wave_length="middle"
+        wave:background="@drawable/gradient_background"/>
 
     <SeekBar
         android:id="@+id/seek_bar"
